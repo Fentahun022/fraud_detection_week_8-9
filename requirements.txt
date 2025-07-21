@@ -1,0 +1,23 @@
+# requirements.txt
+
+# Core data manipulation and scientific computing
+pandas==2.2.2
+numpy==1.26.4
+
+# Machine Learning
+scikit-learn==1.4.2
+lightgbm==4.3.0
+imbalanced-learn==0.12.2 # For SMOTE, RandomUnderSampler
+
+# Data Visualization
+matplotlib==3.8.4
+seaborn==0.13.2
+
+# Model Explainability
+shap==0.45.0
+
+# Model Persistence (often comes with scikit-learn, but good to list explicitly if used heavily)
+joblib==1.4.2
+
+# IP Address handling (part of standard library, but if an external package was used, it would be here)
+# ipaddress - usually not listed as it's a standard library module.
