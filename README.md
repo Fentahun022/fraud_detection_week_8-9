@@ -2,69 +2,78 @@
 
 ## Project Overview
 
-This project aims to enhance fraud detection capabilities for Adey Innovations Inc., a leading financial technology company. We develop and evaluate robust machine learning models to identify fraudulent activities in both e-commerce and bank credit transactions. A core focus is on addressing the critical challenge of class imbalance inherent in fraud datasets and balancing the trade-off between security and user experience (minimizing false positives while detecting true fraud).
+This project aims to significantly enhance the detection of fraudulent activities in online e-commerce transactions and traditional bank credit card transactions for Adey Innovations Inc. By applying advanced data science techniques, including detailed data analysis, sophisticated feature engineering, robust machine learning model building, and powerful explainability methods (SHAP), we seek to:
 
-The project leverages detailed data analysis, advanced feature engineering (including geolocation and time-based patterns), modern machine learning models (Logistic Regression, Gradient Boosting), and explainability techniques (SHAP) to provide actionable insights into fraud drivers.
+*   **Accurately Identify Fraud:** Develop models that can precisely distinguish between legitimate and fraudulent transactions.
+*   **Minimize Financial Losses:** Prevent monetary loss for Adey Innovations Inc. and its customers due to fraud.
+*   **Build Customer Trust:** Enhance transaction security, fostering greater confidence among customers and financial institutions.
+*   **Optimize Operational Efficiency:** Provide actionable insights for real-time monitoring and rapid response to suspicious activities.
+*   **Balance Trade-offs:** Carefully manage the critical trade-off between security (minimizing false negatives/missing fraud) and user experience (minimizing false positives/flagging legitimate transactions).
 
 ## Business Need
 
-Effective fraud detection is crucial for preventing financial losses and building trust with customers and financial institutions. This project directly addresses this need by:
-*   **Minimizing Financial Losses:** Accurately identifying fraudulent transactions reduces direct monetary loss.
-*   **Enhancing Customer Trust:** Robust security measures instill confidence in users and partners.
-*   **Optimizing Operations:** Streamlining real-time monitoring and reporting for quicker response to suspicious activities.
-*   **Balancing Security and UX:** Carefully managing false positives to avoid alienating legitimate customers.
+In the financial technology sector, effective fraud detection is not just a technical challenge but a critical business imperative. The consequences of undetected fraud range from direct financial losses to severe reputational damage and erosion of customer trust. This project directly addresses these challenges by building intelligent systems capable of adapting to evolving fraud patterns, thereby safeguarding financial assets and reinforcing our commitment to security and customer satisfaction.
 
 ## Datasets
 
-This project utilizes three datasets:
+This project utilizes three distinct datasets, each presenting unique characteristics and challenges:
 
 1.  **`Fraud_Data.csv` (E-commerce Transactions):**
-    *   `user_id`, `signup_time`, `purchase_time`, `purchase_value`, `device_id`, `source`, `browser`, `sex`, `age`, `ip_address`, `class` (target: 1=fraud, 0=legitimate).
-    *   **Critical Challenge:** High class imbalance.
+    *   **Description:** Contains a diverse set of e-commerce transaction records.
+    *   **Key Features:** `user_id`, `signup_time`, `purchase_time`, `purchase_value`, `device_id`, `source`, `browser`, `sex`, `age`, `ip_address`, and the target `class` (1 for fraudulent, 0 for legitimate).
+    *   **Critical Challenge:** Exhibits a high degree of class imbalance, where fraudulent transactions are a small minority.
 
 2.  **`IpAddress_to_Country.csv` (IP to Country Mapping):**
-    *   `lower_bound_ip_address`, `upper_bound_ip_address`, `country`.
-    *   Used to enrich `Fraud_Data.csv` with geographical information.
+    *   **Description:** A lookup table used to enrich `Fraud_Data.csv` with geographical information.
+    *   **Key Features:** `lower_bound_ip_address`, `upper_bound_ip_address`, `country`.
 
 3.  **`creditcard.csv` (Bank Credit Card Transactions):**
-    *   `Time`, `V1` to `V28` (anonymized PCA components), `Amount`, `Class` (target: 1=fraud, 0=legitimate).
-    *   **Critical Challenge:** Extreme class imbalance.
+    *   **Description:** A dataset specifically curated for bank fraud detection, featuring anonymized transactional data.
+    *   **Key Features:** `Time` (seconds elapsed from the first transaction), `V1` to `V28` (anonymized PCA components representing underlying transaction patterns), `Amount`, and the target `Class` (1 for fraudulent, 0 for legitimate).
+    *   **Critical Challenge:** Presents an even more extreme class imbalance compared to the e-commerce dataset, typical of real-world financial fraud.
+
+## Project Structure
+
+
 
 ## Project Structure
 fraud_detection_week_8-9/
-├── data/
-│ ├── Fraud_Data.csv
-│ ├── IpAddress_to_Country.csv
-│ └── creditcard.csv
-│ └── processed/ # Stores intermediate processed/engineered data
-│ ├── fraud_data_processed.csv
-│ ├── fraud_data_engineered.csv
-│ └── creditcard_processed.csv
+├── ── data/
+│ ├── Fraud_Data.csv # Raw e-commerce transaction data
+│ ├── IpAddress_to_Country.csv # IP address to country mapping data
+│ └── creditcard.csv # Raw bank credit card transaction data
+│ └── processed/ # Directory for intermediate processed data files
+│ ├── fraud_data_processed.csv # E-commerce data after initial cleaning and IP merge
+│ ├── fraud_data_engineered.csv # E-commerce data with engineered features
+│ └── creditcard_processed.csv # Bank data after cleaning
+│ └── creditcard_engineered.csv # Bank data (same as processed for this project)
 ├── notebooks/
-│ ├── 1_EDA_Fraud_Data.ipynb
-│ ├── 2_EDA_CreditCard_Data.ipynb
-│ └── 3_Feature_Engineering_and_Modeling.ipynb
-├── src/
+│ ├── 1_EDA_Fraud_Data.ipynb # Exploratory Data Analysis for E-commerce data
+│ ├── 2_EDA_CreditCard_Data.ipynb # Exploratory Data Analysis for Bank data
+│ └── 3_Feature_Engineering_and_Modeling.ipynb # Prototyping for FE and model selection
+├── src/ # Source code for the data science pipeline
 │ ├── data_preprocessing.py # Handles data loading, cleaning, IP-to-country merge
 │ ├── feature_engineering.py # Creates new time-based and velocity features
 │ ├── model_training.py # Builds, trains, and evaluates ML models
 │ ├── model_explainability.py # Generates SHAP plots for model interpretation
-│ └── utils.py # Optional: For shared helper functions
-├── models/
-│ ├── ecommerce_logistic_regression.pkl # Saved trained models
+│ └── utils.py # Utility functions (e.g., feature type identification)
+├── models/ # Stores trained machine learning models in .pkl format
+│ ├── ecommerce_logistic_regression.pkl
 │ ├── ecommerce_lightgbm.pkl
 │ ├── bank_logistic_regression.pkl
-│ └── bank_lightgbm.pkl
-├── reports/
-│ ├── interim_1_report.pdf # Project reports (PDF or Markdown)
-│ ├── interim_2_report.pdf
-│ ├── final_report_or_blog_post.pdf/md
-│ ├── confusion_matrix_E_commerce_Data_Logistic_Regression.png # Saved plots
-│ ├── pr_curve_E_commerce_Data_Logistic_Regression.png
-│ └── shap_summary_plot_E_commerce_Data_LightGBM.png
-├── .gitignore # Specifies files/directories to ignore in Git
-├── requirements.txt # Lists all Python package dependencies
-└── README.md
+│ ├── bank_lightgbm.pkl
+│ ├── ecommerce_training_results.pkl # Stores test sets and best model for explainability
+│ └── bank_training_results.pkl
+├── reports/ # Stores project reports (PDF, Markdown) and generated visualizations
+│ ├
+│ ├── confusion_matrix_.png # Saved confusion matrix plots
+│ ├── pr_curve_.png # Saved precision-recall curve plots
+│ ├── shap_summary_dot_plot_.png # Saved SHAP summary dot plots
+│ ├── shap_bar_plot_.png # Saved SHAP bar plots (feature importance)
+│ └── shap_force_plot_instance_*.html # Saved interactive SHAP force plots for individual predictions
+├── .gitignore # Specifies files/directories to be ignored by Git
+├── requirements.txt # Lists all Python package dependencies and their versions
+└── README.md # This comprehensive project overview
 
 
 ## Setup Instructions
